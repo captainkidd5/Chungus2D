@@ -182,22 +182,6 @@ namespace Chungus2D.PhysicsEngine
 
                     // Move the Sphere to resolve the collision
 
-
-                    //prevents snagging on flat ground
-                    //The lower this number, the more willing this is to seep into other collisions (basically soft collisions)
-                    float cutOff = 1;
-
-                    if (collisionNormal.Y != 0)
-                    {
-                        if (Math.Abs(collisionNormal.Y) < cutOff)
-                            return;
-                    }
-                    if (collisionNormal.X != 0)
-                    {
-                        if (Math.Abs(collisionNormal.X) < cutOff)
-                            return;
-                    }
-     
                     Sphere.Center -= collisionNormal * penetrationDepth;
                     RestitutionCalculations(other, collisionNormal);
 
@@ -205,6 +189,9 @@ namespace Chungus2D.PhysicsEngine
 
 
             }
+            float newFrictionAmt =1 - (1 + Friction) / 100;
+
+            Velocity *= newFrictionAmt;
 
         }
 

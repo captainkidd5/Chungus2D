@@ -10,7 +10,7 @@ namespace Chungus2D
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public static PhysicsWorld World;
-        private Playfield _playfield;
+        public static Playfield PlayField;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -25,7 +25,7 @@ namespace Chungus2D
             base.Initialize();
             World = new PhysicsWorld();
             World.Initialize(GraphicsDevice);
-            _playfield = new Playfield(GraphicsDevice);
+            PlayField = new Playfield(GraphicsDevice);
         }
 
         protected override void LoadContent()
@@ -41,7 +41,7 @@ namespace Chungus2D
                 Exit();
 
             // TODO: Add your update logic here
-            _playfield.Update(gameTime);
+            PlayField.Update(gameTime);
             World.Update();
             base.Update(gameTime);
         }
@@ -52,7 +52,7 @@ namespace Chungus2D
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            _playfield.Draw(_spriteBatch);
+            PlayField.Draw(_spriteBatch);
             World.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);

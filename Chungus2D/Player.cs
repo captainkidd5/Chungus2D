@@ -57,7 +57,15 @@ namespace Chungus2D
 
             if (_newKeyboardState.IsKeyDown(Keys.Space) && _oldKeyboardState.IsKeyUp(Keys.Space))
                 Collider.Jump();
-
+            if(_newKeyboardState.IsKeyDown(Keys.Q) && _oldKeyboardState.IsKeyUp(Keys.Q))
+            {
+                Collider littleSphereCollider = new SphereCollider(ColliderType.Dynamic, new Vector3(Position.X, Position.Y, Position.Z - 8), 12, CollisionCategory.Item,
+      CollisionCategory.Solid | CollisionCategory.Item | CollisionCategory.Player);
+                littleSphereCollider.ApplyGravity();
+                littleSphereCollider.DrawPrism = false;
+                littleSphereCollider.Jump()
+                Game1.PlayField.
+            }
             Collider.SetVelocity(velocity);
 
 

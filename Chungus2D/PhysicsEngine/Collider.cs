@@ -35,7 +35,7 @@ namespace Chungus2D.PhysicsEngine
         /// </summary>
         public CollisionCategory UnaffectsCategories { get; set; }
 
-
+        public float Friction { get; set; } = 1f;
         public bool IsSensor { get; set; }
         public Vector3 Velocity { get; protected set; }
         public bool HadCollision { get; protected set; }
@@ -91,9 +91,9 @@ namespace Chungus2D.PhysicsEngine
             AddComponent(new Gravitizer());
         }
 
-        public void Jump()
+        public void Jump(Vector3 initialThrowDirection, Vector3 momentum, Vector3 multiplier)
         {
-                Tosser bouncer = new Tosser();
+                Tosser bouncer = new Tosser(initialThrowDirection,momentum,multiplier);
                 AddComponent(bouncer);
         }
 

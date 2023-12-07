@@ -20,6 +20,7 @@ namespace Chungus2D
 
         private Player _player;
 
+        public List<Collider> ItemColliders;
         public Playfield(GraphicsDevice graphics)
         {
             _player = new Player(graphics);
@@ -41,6 +42,19 @@ namespace Chungus2D
 
             Prism crate3 = new Prism(Position + new Vector3(200, 250, 0), 48, 48, 12);
             AddObstacle(crate3);
+            Vector3 littleSpherePosition = Position + new Vector3(200, 250, 26);
+
+            ItemColliders = new List<Collider>();
+            for (int i =0; i < 14; i++)
+            {
+                littleSpherePosition += new Vector3(4, 4, 24);
+                Collider littleSphereCollider = new SphereCollider(ColliderType.Dynamic, littleSpherePosition, 12, CollisionCategory.Item,
+        CollisionCategory.Solid | CollisionCategory.Item | CollisionCategory.Player);
+                littleSphereCollider.ApplyGravity();
+                littleSphereCollider.DrawPrism = false;
+                Game1.World.Add(littleSphereCollider);
+                ItemColliders.Add(littleSphereCollider);
+            }
         }
 
 
@@ -50,7 +64,7 @@ namespace Chungus2D
                 CollisionCategory.Solid, CollisionCategory.Player | CollisionCategory.Item, Vector2.Zero);
 
             collider.LayerDepth = DrawH.GetYAxisLayerDepth(collider.Position);
-
+          
             Game1.World.Add(collider);
 
         }
@@ -58,6 +72,12 @@ namespace Chungus2D
         {
             Ground.Update(gameTime);
             _player.Update(gameTime);
+            foreach(Collider collider in ItemColliders)
+            {
+                collider.Update(gameTime);
+                collider.LayerDepth = DrawH.GetYAxisLayerDepth(collider.Position);
+
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
