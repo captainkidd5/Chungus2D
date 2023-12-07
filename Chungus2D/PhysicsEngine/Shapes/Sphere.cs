@@ -18,10 +18,10 @@ namespace Chungus2D.PhysicsEngine.Shapes
 
         public Vector3 Bottom => new Vector3(Center.X, Center.Y, Center.Z - Radius);
 
-        public Sphere(Vector3 center, int radius, int precision = 12)
+        public Sphere(Vector3 center, int radius, int drawPrecision = 12)
         {
             Center = center;
-            Points = new Vector2[precision];
+            Points = new Vector2[drawPrecision];
             Radius = radius;
             Points = GetPoints();
         }

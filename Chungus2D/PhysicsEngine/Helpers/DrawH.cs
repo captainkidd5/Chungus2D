@@ -47,7 +47,7 @@ namespace Chungus2D.PhysicsEngine.Helpers
         {
             float offSetLayerDepth = layerDepth - DrawH.s_LayerMultiplier * 2;
             spriteBatch.Draw(s_pixel, rect.GetXNARectangle(), null,Color.White,0f,Vector2.Zero,SpriteEffects.None, layerDepth );
-            DrawLine(spriteBatch, new Vector2(rect.X, rect.Y), new Vector2(rect.X + rect.Width, rect.Y), offSetLayerDepth, Color.Red, thickness);
+            //DrawLine(spriteBatch, new Vector2(rect.X, rect.Y), new Vector2(rect.X + rect.Width, rect.Y), offSetLayerDepth, Color.Red, thickness);
             DrawLine(spriteBatch, new Vector2(rect.X + rect.Width, rect.Y), new Vector2(rect.X + rect.Width, rect.Y + rect.Height), offSetLayerDepth, Color.Red, thickness);
             DrawLine(spriteBatch, new Vector2(rect.X + rect.Width, rect.Y + rect.Height), new Vector2(rect.X, rect.Y + rect.Height), offSetLayerDepth, Color.Red, thickness);
             DrawLine(spriteBatch, new Vector2(rect.X, rect.Y + rect.Height), new Vector2(rect.X, rect.Y), offSetLayerDepth, Color.Red, thickness);

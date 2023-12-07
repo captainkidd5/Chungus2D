@@ -15,9 +15,9 @@ namespace Chungus2D.PhysicsEngine
 
         public override float Height => Sphere.Radius * 2;
         public SphereCollider(ColliderType colliderType, Vector3 center, int radius, CollisionCategory collisionCategory, CollisionCategory collidesWith,
-            int precision = 12) : base(colliderType, collisionCategory, collidesWith)
+            int drawPrecision = 12) : base(colliderType, collisionCategory, collidesWith)
         {
-            Sphere = new Sphere(center, radius, precision);
+            Sphere = new Sphere(center, radius, drawPrecision);
             Prism = new Prism(new Vector3(Sphere.Center.X - Sphere.Radius,
                 Sphere.Center.Y - Sphere.Radius, Sphere.Center.Z), Sphere.Radius * 2, Sphere.Radius * 2, Sphere.Radius * 2);
         }
@@ -33,7 +33,6 @@ namespace Chungus2D.PhysicsEngine
         }
         public override void Update(GameTime gameTime)
         {
-            //sensors should not update the entity position
 
 
             base.Update(gameTime);

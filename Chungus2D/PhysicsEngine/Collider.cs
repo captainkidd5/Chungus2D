@@ -94,7 +94,6 @@ namespace Chungus2D.PhysicsEngine
         public void Jump()
         {
                 Tosser bouncer = new Tosser();
-                bouncer.MaxBounces = 0;
                 AddComponent(bouncer);
         }
 

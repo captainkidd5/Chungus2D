@@ -33,14 +33,14 @@ namespace Chungus2D
             Ground.LayerDepth = .99f;
             Game1.World.Add(Ground);
 
-            Prism crate = new Prism(Position + new Vector3(50, 50, 0), 32, 32, 32);
+            Prism crate1 = new Prism(Position + new Vector3(50, 50, 0), 32, 32, 32);
+            AddObstacle(crate1);
 
-            AddObstacle(crate);
-            crate.Position += new Vector3(100, 100, 0);
-            AddObstacle(crate);
+            Prism crate2 = new Prism(Position + new Vector3(200, 200, 0), 24, 24, 24);
+            AddObstacle(crate2);
 
-            crate.Position += new Vector3(50, 50, 0);
-            AddObstacle(crate);
+            Prism crate3 = new Prism(Position + new Vector3(200, 250, 0), 48, 48, 12);
+            AddObstacle(crate3);
         }
 
 

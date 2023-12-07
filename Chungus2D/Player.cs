@@ -14,18 +14,19 @@ namespace Chungus2D
 {
     internal class Player
     {
-        public Collider Collider { get; set; }
 
+        private readonly int _speed = 100;
+        private readonly int _radius = 16;
+        public Collider Collider { get; set; }
         public Vector3 Position { get; set; }
 
         private KeyboardState _newKeyboardState;
         private KeyboardState _oldKeyboardState;
 
-        private int _speed = 100;
-        private int _radius = 16;
+    
         public Player(GraphicsDevice graphics)
         {
-            Vector3 Position = new Vector3(graphics.Viewport.Width / 2 / 2, graphics.Viewport.Height / 2  / 2, 40);
+            Position = new Vector3(graphics.Viewport.Width / 2 / 2, graphics.Viewport.Height / 2  / 2, 40);
 
             Collider = new SphereCollider(ColliderType.Dynamic, Position, _radius, CollisionCategory.Player,
                 CollisionCategory.Solid | CollisionCategory.Item);
@@ -60,12 +61,15 @@ namespace Chungus2D
             Collider.SetVelocity(velocity);
 
 
+            //Not used, but shows how you could obtain a position from the collider to perhaps draw the player
+            Position = Collider.Position;
 
             _oldKeyboardState = _newKeyboardState;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            //todo: draw player
         }
 
     }

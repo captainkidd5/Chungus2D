@@ -23,10 +23,7 @@ namespace Chungus2D.PhysicsEngine.Modifiers
 
         }
 
-        public virtual void ForceWarp(Vector3 pos)
-        {
 
-        }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
 
