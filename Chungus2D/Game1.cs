@@ -9,7 +9,8 @@ namespace Chungus2D
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private PhysicsWorld _world;
+        public static PhysicsWorld World;
+        private Player _player;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -22,8 +23,9 @@ namespace Chungus2D
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            _world = new PhysicsWorld();
-            _world.Initialize();
+            World = new PhysicsWorld();
+            World.Initialize(GraphicsDevice);
+            _player = new Player();
         }
 
         protected override void LoadContent()
@@ -39,7 +41,8 @@ namespace Chungus2D
                 Exit();
 
             // TODO: Add your update logic here
-            _world.Update();
+            _player.Update(gameTime);
+            World.Update();
             base.Update(gameTime);
         }
 
@@ -48,7 +51,9 @@ namespace Chungus2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            _player.Draw(_spriteBatch);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

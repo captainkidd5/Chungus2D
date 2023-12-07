@@ -50,41 +50,8 @@ namespace Chungus2D.PhysicsEngine
         public override void CleanupPhase()
         {
 
-
-            if (Sphere.Bottom.Z < Entity.BaseZHeight)
-            {
-
-                Sphere.Update(new Vector3(Sphere.Center.X, Sphere.Center.Y, Entity.BaseZHeight + Sphere.Radius));
-                Velocity = new Vector3(Velocity.X, Velocity.Y, 0);
-
-            }
             if (ColliderType != ColliderType.Static)
-            {
-                float baseZHeight = Entity.GetGroundLevelBelowEntity(Sphere.Bottom);
-
-                if (HighestZEncountered > baseZHeight)
-                    baseZHeight = HighestZEncountered;
-
-
-                Entity.BaseZHeight = baseZHeight;
-
-            }
-
-
-            //static sphere colliders should be able to be mounted below the ground
-            if (Sphere.Bottom.Z < 0 && ColliderType != ColliderType.Static)
-            {
-
-                if (Sphere.Bottom.Z < Entity.BaseZHeight)
-                {
-                    Sphere.Center = new Vector3(Sphere.Center.X, Sphere.Center.Y, Sphere.Radius + Entity.BaseZHeight);
-                    Velocity = new Vector3(Velocity.X, Velocity.Y, 0);
-                }
-
-
-            }
-            if (ColliderType != ColliderType.Static)
-                Entity.Position = Sphere.Bottom - new Vector3(OffSet.X, OffSet.Y, 0);
+               Position = Sphere.Bottom - new Vector3(OffSet.X, OffSet.Y, 0);
             base.CleanupPhase();
         }
         /// <summary>
@@ -141,8 +108,7 @@ namespace Chungus2D.PhysicsEngine
             base.ReactToCollision(other);
             //sensors cannot physically affect, or be affected by other colliders
 
-            //if (CollisionCategories == CollisionCategory.Hook)
-            //   Console.WriteLine("test");
+
 
             if (IsSensor || other.IsSensor || ColliderType == ColliderType.Static)
                 return;
@@ -174,14 +140,15 @@ namespace Chungus2D.PhysicsEngine
                     // Calculate the collision normal (unit vector pointing from Sphere to otherSphere)
                     Vector3 collisionNormal = collisionVector / distanceBetweenSpheres;
 
+                    //Force the sphere upwards for edge case
                     if (Vec3H.AnyNaN(collisionNormal))
                         collisionNormal = new Vector3(0, 0, 1);
+
                     // Move the spheres apart to resolve the collision
                     Sphere.Center -= collisionNormal * penetrationDepth;
 
                     RestitutionCalculations(other, collisionNormal);
 
-                    // You may want to update Sphere and otherSphere velocities and positions here
                 }
             }
             else if (other is PrismCollider)
@@ -197,7 +164,7 @@ namespace Chungus2D.PhysicsEngine
                 Vector3 closestPoint = new Vector3(closestX, closestY, closestZ);
                 float distance = Vector3.Distance(Sphere.Center, closestPoint);
 
-                if (distance * 0.1f < Sphere.Radius)
+                if (distance  < Sphere.Radius)
                 {
                     if (closestPoint - Sphere.Center == Vector3.Zero)
                         return;
@@ -205,35 +172,21 @@ namespace Chungus2D.PhysicsEngine
                     // Calculate the penetration depth
                     float penetrationDepth = (float)Sphere.Radius - distance;
 
-                    if (penetrationDepth != 0)
-                        Console.WriteLine("test");
                     // Calculate the collision normal (pointing from the Sphere to the closest point on the Prism)
                     Vector3 collisionNormal = Vector3.Normalize(closestPoint - Sphere.Center);
+
+                    //Force the sphere upwards for edge case
                     if (Vec3H.AnyNaN(collisionNormal))
                     {
                         collisionNormal = new Vector3(0, 0, 1);
-                        //return;
                     }
-                    if (collisionNormal.Z < 0)
-                    {
-                        //Entity.BaseZHeight = otherPrism.Height + otherPrism.Z;
-                        //Sphere.Center = new Vector3(Sphere.Center.X, Sphere.Center.Y, Sphere.Center.Z - collisionNormal.Z * penetrationDepth);
-                        //RestitutionCalculations(other, collisionNormal);
 
-                        // return;
-                    }
                     // Move the Sphere to resolve the collision
 
 
                     //prevents snagging on flat ground
                     //The lower this number, the more willing this is to seep into other collisions (basically soft collisions)
                     float cutOff = 1;
-                    if (CollisionCategories == CollisionCategory.Actor)
-                    {
-                        cutOff = 1;
-                    }
-                    else if (CollisionCategories == CollisionCategory.WorldItem)
-                        cutOff = .005f;
 
                     if (collisionNormal.Y != 0)
                     {
@@ -245,10 +198,7 @@ namespace Chungus2D.PhysicsEngine
                         if (Math.Abs(collisionNormal.X) < cutOff)
                             return;
                     }
-                    if (CollisionCategories == CollisionCategory.WorldItem)
-                    {
-                        collisionNormal = collisionNormal / 2;
-                    }
+     
                     Sphere.Center -= collisionNormal * penetrationDepth;
                     RestitutionCalculations(other, collisionNormal);
 
@@ -259,11 +209,8 @@ namespace Chungus2D.PhysicsEngine
 
         }
 
-
-
         public override void Draw(SpriteBatch spriteBatch)
         {
-           
                 Color color = HadCollision ? PhysicsWorld.S_CollidedColor : ColorFromColliderType();
 
                 Sphere.Draw(spriteBatch, 0f,  color);

@@ -33,7 +33,7 @@ namespace Chungus2D.PhysicsEngine
        
 
             if (!IsSensor)
-                Entity.Position = Prism.Position - new Vector3(OffSet.X, OffSet.Y, 0);
+                Position = Prism.Position - new Vector3(OffSet.X, OffSet.Y, 0);
 
             base.Update(gameTime);
 
@@ -49,8 +49,6 @@ namespace Chungus2D.PhysicsEngine
         {
             if (Prism.Bottom < 0 && ColliderType != ColliderType.Static)
             {
-
-                Entity.BaseZHeight = 0;
                 Prism.Update(new Vector3(Prism.X, Prism.Y, 0));
                 Velocity = new Vector3(Velocity.X, Velocity.Y, 0);
 

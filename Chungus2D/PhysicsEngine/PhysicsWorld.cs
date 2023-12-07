@@ -1,4 +1,5 @@
 ﻿
+using Chungus2D.PhysicsEngine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -7,14 +8,17 @@ using System.Text;
 
 namespace Chungus2D.PhysicsEngine
 {
+    /// <summary>
+    /// Rename 1-31 as you see fit. There are named ones here for the example
+    /// </summary>
     [Flags]
     public enum CollisionCategory
     {
         None = 0,
         All = int.MaxValue,
         Solid = 1,
-        Cat2 = 2,
-        Cat3 = 4,
+        Player = 2,
+        Item = 4,
         Cat4 = 8,
         Cat5 = 16,
         Cat6 = 32,
@@ -70,9 +74,9 @@ namespace Chungus2D.PhysicsEngine
         private QuadTree<Collider> _quadTree;
         private List<Collider> _colliders;
         private List<Collider> _collisions;
-        public void Initialize()
+        public void Initialize(GraphicsDevice graphicsDevice)
         {
-
+            DrawH.Initialize(graphicsDevice);
             CreateQuadTree();
             _colliders = new List<Collider>();
             _collisions = new List<Collider>();
@@ -140,10 +144,10 @@ namespace Chungus2D.PhysicsEngine
                     //do not collide with self
                     if (originalCollider == collision)
                         continue;
-          
+
                     //React to collision with other collider (undo any penetration into other colliders)
-                    if (originalCollider.Resolve(collision))
-                        Console.WriteLine("test");
+                    originalCollider.Resolve(collision);
+                   
                 }
                 _collisions.Clear();
 

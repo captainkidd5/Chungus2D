@@ -63,16 +63,16 @@ namespace Core.PhysicsEngine.Modifiers
 
             }
 
-            if ((Collider as SphereCollider).Sphere.Bottom.Z <= Entity.BaseZHeight)
-            {
+            //if ((Collider as SphereCollider).Sphere.Bottom.Z <= Entity.BaseZHeight)
+            //{
 
-                _acceleration = 2 * _acceleration / 3;
-                _numTimesBounced++;
+            //    _acceleration = 2 * _acceleration / 3;
+            //    _numTimesBounced++;
           
-                Collider.SetVelocity(new Vector3(_acceleration.X, _acceleration.Y, _acceleration.Z));
+            //    Collider.SetVelocity(new Vector3(_acceleration.X, _acceleration.Y, _acceleration.Z));
 
 
-            }
+            //}
 
 
         }

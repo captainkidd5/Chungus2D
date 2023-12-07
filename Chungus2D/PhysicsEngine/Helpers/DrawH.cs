@@ -9,10 +9,17 @@ using System.Threading.Tasks;
 
 namespace Chungus2D.PhysicsEngine.Helpers
 {
-    public class DrawH
+    internal static class DrawH
     {
         private static Texture2D s_pixel;
         private static readonly float s_defaultThickness = 1f;
+
+        public static void Initialize(GraphicsDevice graphicsDevice)
+        {
+            s_pixel = new Texture2D(graphicsDevice, 1, 1);
+            Color[] colorData = { Color.Red };
+            s_pixel.SetData(colorData);
+        }
         public static void DrawLine(SpriteBatch spriteBatch, Vector2 p1, Vector2 p2, float layerDepth, Color? color = null, float? thickness = null)
 
         {
@@ -34,6 +41,18 @@ namespace Chungus2D.PhysicsEngine.Helpers
             DrawLine(spriteBatch, new Vector2(rect.X + rect.Width, rect.Y + rect.Height), new Vector2(rect.X, rect.Y + rect.Height), layerDepth, color, thickness);
             DrawLine(spriteBatch, new Vector2(rect.X, rect.Y + rect.Height), new Vector2(rect.X, rect.Y), layerDepth, color, thickness);
 
+        }
+        internal static void DrawCircle(SpriteBatch spriteBatch, Vector2 center, Vector2[] points, float layerDepth, Color? color = null, float? thickness = null)
+        {
+            for (int i = 0; i < points.Length; i++)
+            {
+                if (i < points.Length - 1)
+                    DrawLine(spriteBatch, center + points[i], center + points[i + 1], layerDepth, color, thickness);
+                //else connect the last and first point to close the shape
+                else
+                    DrawLine(spriteBatch, center + points[i], center + points[0], layerDepth, color, thickness);
+
+            }
         }
     }
 }

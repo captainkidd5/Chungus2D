@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chungus2D.PhysicsEngine.Helpers;
 
 namespace Chungus2D.PhysicsEngine.Shapes
 
@@ -53,25 +54,7 @@ namespace Chungus2D.PhysicsEngine.Shapes
             return didCollide;
         }
 
-        public bool Intersects(RectangleF other)
-        {
-            // Calculate the center of the circle
-            float circleCenterX = Center.X;
-            float circleCenterY = Center.Y;
-
-            // Find the closest point on the rectangle to the center of the circle
-            float closestX = MathHelper.Clamp(circleCenterX, other.Left, other.Right);
-            float closestY = MathHelper.Clamp(circleCenterY, other.Top, other.Bottom);
-
-            // Calculate the distance between the circle's center and the closest point on the rectangle
-            float distanceSquared = (circleCenterX - closestX) * (circleCenterX - closestX) +
-                                    (circleCenterY - closestY) * (circleCenterY - closestY);
-
-            // Check if the distance squared is less than the circle's radius squared
-            bool didCollide = distanceSquared <= Radius * Radius;
-
-            return didCollide;
-        }
+ 
         public bool Intersects(Prism other)
         {
 
@@ -96,12 +79,13 @@ namespace Chungus2D.PhysicsEngine.Shapes
             Center = position;
 
         }
-
         public void Draw(SpriteBatch spriteBatch, float layerDepth, Color? color = null, float? thickness = null)
         {
 
-            Primitives2D.DrawCircle(spriteBatch, new Vector2(Center.X, Center.Y - Center.Z), Points, layerDepth, color, thickness);
-            Primitives2D.DrawLine(spriteBatch, new Vector2(Center.X, Center.Y - Center.Z), new Vector2(Center.X, Center.Y - Center.Z - Radius), layerDepth, color * .5f, thickness);
+            DrawH.DrawCircle(spriteBatch, new Vector2(Center.X, Center.Y - Center.Z), Points, layerDepth, color, thickness);
+
+            //draw line from center of sphere to top of sphere to display radius
+            DrawH.DrawLine(spriteBatch, new Vector2(Center.X, Center.Y - Center.Z), new Vector2(Center.X, Center.Y - Center.Z - Radius), layerDepth, color * .5f, thickness);
         }
 
     }

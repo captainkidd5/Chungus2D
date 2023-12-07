@@ -1,5 +1,4 @@
-﻿using Chungus2D.EC;
-using Chungus2D.PhysicsEngine.Modifiers;
+﻿using Chungus2D.PhysicsEngine.Modifiers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

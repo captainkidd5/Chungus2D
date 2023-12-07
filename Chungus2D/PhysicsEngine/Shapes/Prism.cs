@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Chungus2D.PhysicsEngine.Shapes;
+using Chungus2D.PhysicsEngine.Helpers;
 
 namespace Chungus2D.PhysicsEngine
 {
@@ -61,11 +62,11 @@ namespace Chungus2D.PhysicsEngine
 
     public void Draw(SpriteBatch spriteBatch, float layerDepth, Microsoft.Xna.Framework.Color? color = null, float? thickness = null)
     {
-        Primitives2D.DrawRectangle(spriteBatch, new RectangleF(Position.X, Position.Y - Position.Z, Width, Length), layerDepth, color, thickness);
+        DrawH.DrawRectangle(spriteBatch, new RectangleF(Position.X, Position.Y - Position.Z, Width, Length), layerDepth, color, thickness);
 
-        Primitives2D.DrawRectangle(spriteBatch, new RectangleF(Position.X, Position.Y - Height - Position.Z, Width, Length), layerDepth, color * .25f, thickness);
+            DrawH.DrawRectangle(spriteBatch, new RectangleF(Position.X, Position.Y - Height - Position.Z, Width, Length), layerDepth, color * .25f, thickness);
 
-        Primitives2D.DrawLine(spriteBatch, new Vector2(Position.X, Position.Y - Position.Z), new Vector2(Position.X, Position.Y - Height - Position.Z), layerDepth, color * .5f, thickness);
+            DrawH.DrawLine(spriteBatch, new Vector2(Position.X, Position.Y - Position.Z), new Vector2(Position.X, Position.Y - Height - Position.Z), layerDepth, color * .5f, thickness);
 
 
 
