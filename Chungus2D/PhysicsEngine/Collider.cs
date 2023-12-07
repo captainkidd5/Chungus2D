@@ -1,9 +1,12 @@
 ﻿
 using Chungus2D.PhysicsEngine.Modifiers;
+using Core.PhysicsEngine.Modifiers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 
@@ -18,7 +21,6 @@ namespace Chungus2D.PhysicsEngine
         private List<PhysicsComponent> _components;
         public Vector3 Position { get; set; }
         public bool FlaggedForRemoval { get; set; }
-        public bool ApplyGravity { get; set; }
 
         protected Vector2 OffSet { get; set; }
         public ColliderType ColliderType { get; private set; }
@@ -68,13 +70,31 @@ namespace Chungus2D.PhysicsEngine
             IsSensor = false;
             OffSet = offSet;
         }
-
+        private void AddComponent(PhysicsComponent component)
+        {
+            _components.Add(component);
+            component.Attach(this);
+        }
         public abstract void ForceWarp(Vector3 newPos);
 
         public abstract Vector3 GetPosition();
         public void ResetCollision()
         {
             HadCollision = false;
+        }
+
+        public void ApplyGravity()
+        {
+
+
+            AddComponent(new Gravitizer());
+        }
+
+        public void Jump()
+        {
+                Tosser bouncer = new Tosser();
+                bouncer.MaxBounces = 0;
+                AddComponent(bouncer);
         }
 
         public virtual void Update(GameTime gameTime)

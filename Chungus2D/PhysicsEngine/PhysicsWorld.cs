@@ -101,10 +101,10 @@ namespace Chungus2D.PhysicsEngine
 
         public void Update()
         {
-         
-                Reset();
-                DoSimulation();
-            
+
+            Reset();
+            DoSimulation();
+
 
         }
 
@@ -147,7 +147,7 @@ namespace Chungus2D.PhysicsEngine
 
                     //React to collision with other collider (undo any penetration into other colliders)
                     originalCollider.Resolve(collision);
-                   
+
                 }
                 _collisions.Clear();
 
@@ -169,6 +169,14 @@ namespace Chungus2D.PhysicsEngine
 
         }
 
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (Collider collider in _colliders)
+            {
+                collider.Draw(spriteBatch);
+            }
+        }
 
     }
 }
