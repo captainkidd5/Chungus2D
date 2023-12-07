@@ -13,13 +13,22 @@ namespace Chungus2D.PhysicsEngine.Helpers
     {
         private static Texture2D s_pixel;
         private static readonly float s_defaultThickness = 1f;
+        public static readonly float s_LayerMultiplier = .00001f;
+
 
         public static void Initialize(GraphicsDevice graphicsDevice)
         {
             s_pixel = new Texture2D(graphicsDevice, 1, 1);
-            Color[] colorData = { Color.Red };
+            Color[] colorData = { Color.WhiteSmoke };
             s_pixel.SetData(colorData);
         }
+        public static float GetYAxisLayerDepth(Vector3 position, float additionalOffset = 0)
+        {
+            float depth = (position.Y + position.Z + additionalOffset) * s_LayerMultiplier;
+
+            return 1 - depth;
+        }
+
         public static void DrawLine(SpriteBatch spriteBatch, Vector2 p1, Vector2 p2, float layerDepth, Color? color = null, float? thickness = null)
 
         {
@@ -36,10 +45,13 @@ namespace Chungus2D.PhysicsEngine.Helpers
 
         internal static void DrawRectangle(SpriteBatch spriteBatch, RectangleF rect, float layerDepth, Color? color = null, float? thickness = null)
         {
-            DrawLine(spriteBatch, new Vector2(rect.X, rect.Y), new Vector2(rect.X + rect.Width, rect.Y), layerDepth, color, thickness);
-            DrawLine(spriteBatch, new Vector2(rect.X + rect.Width, rect.Y), new Vector2(rect.X + rect.Width, rect.Y + rect.Height), layerDepth, color, thickness);
-            DrawLine(spriteBatch, new Vector2(rect.X + rect.Width, rect.Y + rect.Height), new Vector2(rect.X, rect.Y + rect.Height), layerDepth, color, thickness);
-            DrawLine(spriteBatch, new Vector2(rect.X, rect.Y + rect.Height), new Vector2(rect.X, rect.Y), layerDepth, color, thickness);
+            float offSetLayerDepth = layerDepth - DrawH.s_LayerMultiplier * 2;
+            spriteBatch.Draw(s_pixel, rect.GetXNARectangle(), null,Color.White,0f,Vector2.Zero,SpriteEffects.None, layerDepth );
+            DrawLine(spriteBatch, new Vector2(rect.X, rect.Y), new Vector2(rect.X + rect.Width, rect.Y), offSetLayerDepth, Color.Red, thickness);
+            DrawLine(spriteBatch, new Vector2(rect.X + rect.Width, rect.Y), new Vector2(rect.X + rect.Width, rect.Y + rect.Height), offSetLayerDepth, Color.Red, thickness);
+            DrawLine(spriteBatch, new Vector2(rect.X + rect.Width, rect.Y + rect.Height), new Vector2(rect.X, rect.Y + rect.Height), offSetLayerDepth, Color.Red, thickness);
+            DrawLine(spriteBatch, new Vector2(rect.X, rect.Y + rect.Height), new Vector2(rect.X, rect.Y), offSetLayerDepth, Color.Red, thickness);
+
 
         }
         internal static void DrawCircle(SpriteBatch spriteBatch, Vector2 center, Vector2[] points, float layerDepth, Color? color = null, float? thickness = null)

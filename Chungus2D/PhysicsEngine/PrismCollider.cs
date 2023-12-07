@@ -14,13 +14,14 @@ namespace Chungus2D.PhysicsEngine
         public override float Height => Prism.Height;
 
         public PrismCollider(ColliderType colliderType, Prism cube, CollisionCategory collisionCategory, CollisionCategory collidesWith, Vector2 offSet) :
-            base(colliderType, collisionCategory, collidesWith, offSet)
+            base(colliderType, collisionCategory, collidesWith)
         {
             Prism = cube;
-            OffSet = offSet;
+            Position = Prism.Position;
+
         }
         public PrismCollider(ColliderType colliderType, Vector3 pos, int width, int height, int length, CollisionCategory collisionCategory, CollisionCategory collidesWith, Vector2 offSet) :
-           base(colliderType, collisionCategory, collidesWith, offSet)
+           base(colliderType, collisionCategory, collidesWith)
         {
             Prism = new Prism(pos, width, height, length);
         }
@@ -33,7 +34,7 @@ namespace Chungus2D.PhysicsEngine
        
 
             if (!IsSensor)
-                Position = Prism.Position - new Vector3(OffSet.X, OffSet.Y, 0);
+                Position = Prism.Position ;
 
             base.Update(gameTime);
 
@@ -82,8 +83,11 @@ namespace Chungus2D.PhysicsEngine
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Color color = HadCollision ? PhysicsWorld.S_CollidedColor : ColorFromColliderType();
-                Prism.Draw(spriteBatch, 0f,  Color.Purple);
+            if (DrawPrism)
+            {
+                Color color = HadCollision ? PhysicsWorld.S_CollidedColor : ColorFromColliderType();
+                Prism.Draw(spriteBatch, LayerDepth, Color.Purple);
+            }
         }
     }
 }

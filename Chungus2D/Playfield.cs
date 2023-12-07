@@ -1,4 +1,5 @@
 ﻿using Chungus2D.PhysicsEngine;
+using Chungus2D.PhysicsEngine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -13,27 +14,32 @@ namespace Chungus2D
     {
         public Collider Ground { get; set; }
 
-        private readonly float _width = 400; //x
-        private readonly float _length = 400; //y
         private readonly float _height = 4; //z
 
+        private readonly Vector3 Position;
 
+        private Player _player;
 
         public Playfield(GraphicsDevice graphics)
         {
-            Vector3 position = new Vector3(graphics.Viewport.Width /2 - _width/2, graphics.Viewport.Height/2 - _length/2, 0);
+            _player = new Player(graphics);
+            Position = Vector3.Zero;
 
-            Prism groundDimensions = new Prism(position, _width, _length, _height);
+            Prism groundDimensions = new Prism(Position, graphics.Viewport.Width, graphics.Viewport.Height, _height);
 
             Ground = new PrismCollider(ColliderType.Static, groundDimensions,
                 CollisionCategory.Solid, CollisionCategory.Player | CollisionCategory.Item, Vector2.Zero);
-
+            Ground.DrawPrism = false;
+            Ground.LayerDepth = .99f;
             Game1.World.Add(Ground);
 
-            Prism crate = new Prism(new Vector3(50, 50, 0), 32, 32, 32);
+            Prism crate = new Prism(Position + new Vector3(50, 50, 0), 32, 32, 32);
 
             AddObstacle(crate);
-            crate.Position = new Vector3(100, 100, 0);
+            crate.Position += new Vector3(100, 100, 0);
+            AddObstacle(crate);
+
+            crate.Position += new Vector3(50, 50, 0);
             AddObstacle(crate);
         }
 
@@ -43,12 +49,15 @@ namespace Chungus2D
            Collider collider = new PrismCollider(ColliderType.Static, prism,
                 CollisionCategory.Solid, CollisionCategory.Player | CollisionCategory.Item, Vector2.Zero);
 
+            collider.LayerDepth = DrawH.GetYAxisLayerDepth(collider.Position);
+
             Game1.World.Add(collider);
 
         }
         public void Update(GameTime gameTime)
         {
             Ground.Update(gameTime);
+            _player.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -14,8 +14,8 @@ namespace Chungus2D.PhysicsEngine
         public Sphere Sphere;
 
         public override float Height => Sphere.Radius * 2;
-        public SphereCollider(ColliderType colliderType, Vector3 center, int radius, CollisionCategory collisionCategory, CollisionCategory collidesWith, Vector2 offSet,
-            int precision = 12) : base(colliderType, collisionCategory, collidesWith, offSet)
+        public SphereCollider(ColliderType colliderType, Vector3 center, int radius, CollisionCategory collisionCategory, CollisionCategory collidesWith,
+            int precision = 12) : base(colliderType, collisionCategory, collidesWith)
         {
             Sphere = new Sphere(center, radius, precision);
             Prism = new Prism(new Vector3(Sphere.Center.X - Sphere.Radius,
@@ -51,7 +51,7 @@ namespace Chungus2D.PhysicsEngine
         {
 
             if (ColliderType != ColliderType.Static)
-               Position = Sphere.Bottom - new Vector3(OffSet.X, OffSet.Y, 0);
+               Position = Sphere.Bottom;
             base.CleanupPhase();
         }
         /// <summary>
@@ -213,8 +213,12 @@ namespace Chungus2D.PhysicsEngine
         {
                 Color color = HadCollision ? PhysicsWorld.S_CollidedColor : ColorFromColliderType();
 
-                Sphere.Draw(spriteBatch, 0f,  color);
-                Prism.Draw(spriteBatch, 0f, color * .25f);
+                Sphere.Draw(spriteBatch, LayerDepth,  color);
+
+            if (DrawPrism)
+            {
+                Prism.Draw(spriteBatch, LayerDepth, color * .15f);
+            }
         }
     }
 }

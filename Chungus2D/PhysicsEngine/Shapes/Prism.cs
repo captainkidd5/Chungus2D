@@ -23,7 +23,8 @@ namespace Chungus2D.PhysicsEngine
     public float Z => Position.Z;
 
     public Vector3 Center => new Vector3(X + Width / 2, Y + Length / 2, Z + Height / 2);
-    public Prism(Vector3 position, float width, float length, float height)
+
+        public Prism(Vector3 position, float width, float length, float height)
     {
         Position = position;
         Width = width;
@@ -62,6 +63,8 @@ namespace Chungus2D.PhysicsEngine
 
     public void Draw(SpriteBatch spriteBatch, float layerDepth, Microsoft.Xna.Framework.Color? color = null, float? thickness = null)
     {
+           
+
         DrawH.DrawRectangle(spriteBatch, new RectangleF(Position.X, Position.Y - Position.Z, Width, Length), layerDepth, color, thickness);
 
             DrawH.DrawRectangle(spriteBatch, new RectangleF(Position.X, Position.Y - Height - Position.Z, Width, Length), layerDepth, color * .25f, thickness);
@@ -70,10 +73,10 @@ namespace Chungus2D.PhysicsEngine
 
 
 
-    }
+        }
 
 
-    public bool Contains(float x, float y)
+        public bool Contains(float x, float y)
     {
         return (x >= X && x <= Right && y >= Y && y <= Front);
     }

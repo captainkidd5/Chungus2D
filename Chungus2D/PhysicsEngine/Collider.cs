@@ -22,7 +22,6 @@ namespace Chungus2D.PhysicsEngine
         public Vector3 Position { get; set; }
         public bool FlaggedForRemoval { get; set; }
 
-        protected Vector2 OffSet { get; set; }
         public ColliderType ColliderType { get; private set; }
         public CollisionCategory CollisionCategories { get; set; }
         public CollisionCategory CategoriesCollidesWith { get; set; }
@@ -49,6 +48,7 @@ namespace Chungus2D.PhysicsEngine
         public float Restituion { get; set; } = .7f;
 
         public Dictionary<Collider, bool> CurrentContacts;
+        public bool DrawPrism { get; set; } = true;
 
         public int ContactCount => CurrentContacts.Count;
 
@@ -59,8 +59,10 @@ namespace Chungus2D.PhysicsEngine
 
         public abstract float Height { get; }
 
+        public float LayerDepth { get; set; }
 
-        public Collider(ColliderType colliderType, CollisionCategory collisionCategory, CollisionCategory collidesWith, Vector2 offSet)
+
+        public Collider(ColliderType colliderType, CollisionCategory collisionCategory, CollisionCategory collidesWith)
         {
             _components = new List<PhysicsComponent>();
             ColliderType = colliderType;
@@ -68,7 +70,6 @@ namespace Chungus2D.PhysicsEngine
             CategoriesCollidesWith = collidesWith;
             CurrentContacts = new Dictionary<Collider, bool>();
             IsSensor = false;
-            OffSet = offSet;
         }
         private void AddComponent(PhysicsComponent component)
         {

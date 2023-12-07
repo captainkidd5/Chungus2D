@@ -41,7 +41,10 @@ namespace Chungus2D.PhysicsEngine.Shapes
  
 
 
-
+        public Rectangle GetXNARectangle()
+        {
+            return new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
+        }
 
         public static readonly RectangleF Empty = new RectangleF(0, 0, 0, 0);
 

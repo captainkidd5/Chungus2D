@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Chungus2D.PhysicsEngine;
 using Microsoft.Xna.Framework.Input;
+using Chungus2D.PhysicsEngine.Helpers;
 
 namespace Chungus2D
 {
@@ -20,18 +21,24 @@ namespace Chungus2D
         private KeyboardState _newKeyboardState;
         private KeyboardState _oldKeyboardState;
 
-        private int _speed = 50;
-        public Player()
+        private int _speed = 100;
+        private int _radius = 16;
+        public Player(GraphicsDevice graphics)
         {
-            Position = new Vector3(80, 80, 50);
-            Collider = new SphereCollider(ColliderType.Dynamic, Position, 16, CollisionCategory.Player,
-                CollisionCategory.Solid | CollisionCategory.Item, Vector2.Zero);
+            Vector3 Position = new Vector3(graphics.Viewport.Width / 2 / 2, graphics.Viewport.Height / 2  / 2, 40);
+
+            Collider = new SphereCollider(ColliderType.Dynamic, Position, _radius, CollisionCategory.Player,
+                CollisionCategory.Solid | CollisionCategory.Item);
+
+            Collider.DrawPrism = false;
             Collider.ApplyGravity();
             Game1.World.Add(Collider);
         }
         public void Update(GameTime gameTime)
         {
             Collider.Update(gameTime);
+            Collider.LayerDepth = DrawH.GetYAxisLayerDepth(Collider.Position);
+
             _newKeyboardState = Keyboard.GetState();
 
             //Vector3 velocity = Collider.Velocity;
