@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Chungus2D.PhysicsEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,7 +9,7 @@ namespace Chungus2D
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        private PhysicsWorld _world;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -21,6 +22,8 @@ namespace Chungus2D
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            _world = new PhysicsWorld();
+            _world.Initialize();
         }
 
         protected override void LoadContent()
@@ -36,7 +39,7 @@ namespace Chungus2D
                 Exit();
 
             // TODO: Add your update logic here
-
+            _world.Update();
             base.Update(gameTime);
         }
 
@@ -45,7 +48,7 @@ namespace Chungus2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            
             base.Draw(gameTime);
         }
     }

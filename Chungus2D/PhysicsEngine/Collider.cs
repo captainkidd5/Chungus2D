@@ -1,4 +1,5 @@
 ﻿
+using Chungus2D.PhysicsEngine.Modifiers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -14,8 +15,11 @@ namespace Chungus2D.PhysicsEngine
         public static readonly Color StaticColor = Color.Yellow;
         public static readonly Color DynamicColor = Color.Blue;
 
-        public IEntity Entity { get; set; }
+        private List<PhysicsComponent> _components;
+        public Vector3 Position { get; set; }
         public bool FlaggedForRemoval { get; set; }
+        public bool ApplyGravity { get; set; }
+
         protected Vector2 OffSet { get; set; }
         public ColliderType ColliderType { get; private set; }
         public CollisionCategory CollisionCategories { get; set; }
@@ -46,15 +50,17 @@ namespace Chungus2D.PhysicsEngine
 
         public int ContactCount => CurrentContacts.Count;
 
+        /// <summary>
+        /// All colliders must have a prism in order to be used within the quad tree
+        /// </summary>
         public Prism Prism;
 
         public abstract float Height { get; }
 
-        protected float HighestZEncountered { get; private set; }
 
         public Collider(ColliderType colliderType, CollisionCategory collisionCategory, CollisionCategory collidesWith, Vector2 offSet)
         {
-
+            _components = new List<PhysicsComponent>();
             ColliderType = colliderType;
             CollisionCategories = collisionCategory;
             CategoriesCollidesWith = collidesWith;
@@ -74,24 +80,13 @@ namespace Chungus2D.PhysicsEngine
         public virtual void Update(GameTime gameTime)
         {
 
-            //Apply much less friction at sea level
-            //if (ColliderType == ColliderType.Dynamic &&
-            //  Entity.Position.Z <= Entity.BaseZHeight)
-            //{
-            //    if (Velocity.Length() > 0.01f)
-            //    {
-            //        float friction = Entity.Position.Z > StageManager.Sea.SeaLevel ? 0.1f : 0.01f;
 
-            //        Vector3 frictionForce = -friction * Velocity;
-
-            //        // Apply the friction force to the velocity
-            //        //Ignore vertical friction, gravitizers take care of that
-            //        Velocity += new Vector3(frictionForce.X, frictionForce.Y, 0);
-            //        // Velocity = new Vector3(Velocity.X, Velocity.Y, 0);
-            //    }
-
-            //}
-            HighestZEncountered = 0;
+            for (int i = _components.Count - 1; i >= 0; i--)
+            {
+                _components[i].Update(gameTime);
+                if (_components[i].FlaggedForRemoval)
+                    _components.RemoveAt(i);
+            }
 
 
 
@@ -99,36 +94,18 @@ namespace Chungus2D.PhysicsEngine
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-
+            for (int i = _components.Count - 1; i >= 0; i--)
+                _components[i].Draw(spriteBatch);
         }
-        public bool Resolve(Collider other)
+        public void Resolve(Collider other)
         {
-       
+
             if (NoCategoryOverlap(other))
-                return false;
+                return;
 
             if (DidCollide(other))
-            {
-    
-                if (ColliderType == ColliderType.Dynamic)
-                {
-
-                    if (other.CollisionCategories == CollisionCategory.HeightArea)
-                    {
-
-                        float otherHeight = (float)other.UserData;
-                        if (Prism.Bottom > other.Prism.Bottom && otherHeight > HighestZEncountered)
-                            HighestZEncountered = otherHeight;
-                    }
-
-                }
                 ReactToCollision(other);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+         
 
         }
 

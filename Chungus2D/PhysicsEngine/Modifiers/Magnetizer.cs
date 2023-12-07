@@ -1,4 +1,7 @@
 ﻿
+using Chungus2D.PhysicsEngine;
+using Chungus2D.PhysicsEngine.Helpers;
+using Chungus2D.PhysicsEngine.Modifiers;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -6,28 +9,22 @@ using System.Text;
 
 namespace Core.PhysicsEngine.Modifiers
 {
-    public class Magnetizer : Component
+    internal class Magnetizer : PhysicsComponent
     {
-        private Entity _entityToMoveTowards;
-        public Magnetizer(Entity entityToMoveTowards)
+        //Magnetizes to this collider
+        private Collider _other;
+        public Magnetizer(Collider other)
         {
-
-            _entityToMoveTowards = entityToMoveTowards;
+            _other = other;
 
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            if (!(Entity is ICollidableEntity))
-                throw new Exception($"Entity {Entity.GetType().Name} does not implement ICollidableEntity");
-            ICollidableEntity cEntity = Entity as ICollidableEntity;
-            Vector3 currentVelocity = cEntity.Collider.Velocity;
-            if (Vec3H.MoveTowardsVector(_entityToMoveTowards.Position,Entity.Position,ref currentVelocity,gameTime,1,8))
-            {
-                Console.WriteLine("test");
-            }
-            cEntity.Collider.SetVelocity(currentVelocity);
+            Vector3 currentVelocity = Collider.Velocity;
+            Vec3H.MoveTowardsVector(Collider.Position, Collider.Position, ref currentVelocity, gameTime, 1, 8);
+            Collider.SetVelocity(currentVelocity);
 
 
         }
